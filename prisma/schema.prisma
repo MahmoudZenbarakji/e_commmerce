@@ -1,0 +1,154 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  // output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Prisma schema for the e-commerce models you provided
+// You need to run `npx prisma generate` after saving this
+
+// generator client {
+//   provider = "prisma-client-js"
+// }
+
+// datasource db {
+//   provider = "postgresql" // or your actual provider
+//   url      = env("DATABASE_URL")
+// }
+
+model Brand {
+  id        String   @id @default(uuid())
+  name      String   @db.VarChar(20)
+  image     String
+  products  Product[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Category {
+  id          String       @id @default(uuid())
+  name        String       @db.VarChar(20)
+  image       String
+  subcategory Subcategory[]
+  products    Product[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model Subcategory {
+  id         String   @id @default(uuid())
+  name       String
+  image      String
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
+  products   Product[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Product {
+  id                String     @id @default(uuid())
+  title             String
+  description       String
+  quantity          Int
+  imageCover        String
+  images            String[]
+  sold              Int?
+  price             Float
+  priceAfterdiscount Float?
+  colors            String[]
+  categoryId        String
+  subcategoryId     String
+  brandId           String
+  ratingAverage     Float      @default(0)
+  ratingQuanity     Float?
+  category          Category   @relation(fields: [categoryId], references: [id])
+  subcategory       Subcategory @relation(fields: [subcategoryId], references: [id])
+  brand             Brand      @relation(fields: [brandId], references: [id])
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+
+  User User[]
+}
+
+model Coupon {
+  id         String   @id @default(uuid())
+  name       String   @db.VarChar(20)
+  expireDate DateTime
+  Discount   Float
+  cart       Cart[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Cart {
+  id                     String     @id @default(uuid())
+  cartItems              Json
+  totalPrice             Float
+  totalPriceAfterDiscount Float
+  userId                 String
+  user                   User       @relation(fields: [userId], references: [id])
+  coupons                Json
+  createdAt              DateTime   @default(now())
+  updatedAt              DateTime   @updatedAt
+
+  Coupon Coupon[]
+}
+
+model RequestProduct {
+  id        String   @id @default(uuid())
+  titleNeed String
+  details   String
+  quantity  Int
+  category  String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model User {
+  id               String   @id @default(uuid())
+  name             String
+  email            String   @unique
+  password         String
+  role             String
+  avatar           String?
+  age              Int?
+  PhoneNumber      Int?
+  address          String?
+  active           Boolean?
+  verificationCode String?
+  Gender           String?
+  products         Product[]
+  requestProducts  RequestProduct[]
+  carts            Cart[]
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model Tax {
+  id            String   @id @default(uuid())
+  taxPrice      Float    @default(0)
+  shippingPrice Float    @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Supplier {
+  id        String   @id @default(uuid())
+  name      String   @db.VarChar(20)
+  website   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
