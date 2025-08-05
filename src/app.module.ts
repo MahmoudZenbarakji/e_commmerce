@@ -19,6 +19,7 @@ import { TaxModule } from './tax/tax.module';
 import { ProductModule } from './product/product.module';
 import { CartModule } from './cart/cart.module';
 import { config } from 'process';
+import { OrderModule } from './order/order.module';
 @Module({
   imports: [
     MongooseModule.forRoot(
@@ -51,6 +52,7 @@ import { config } from 'process';
     TaxModule,
     ProductModule,
     CartModule,
+    OrderModule,
 ],
   controllers: [AppController],
   providers: [AppService],

@@ -9,7 +9,7 @@ export class CreateProductDto {
 
     description:string
     @IsNumber()
-    @Min(20,{})
+
     quantity:number
     @IsString()
     @IsUrl()

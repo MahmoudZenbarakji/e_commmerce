@@ -44,7 +44,7 @@ addToCart(
       if (req.user.role.toLowerCase() === "admin") {
         throw new UnauthorizedException();
       }
-    return this.cartService.update(+id, updateCartDto);
+    return this.cartService.update(id, updateCartDto);
   }
 
   @Delete(':id')
@@ -52,6 +52,6 @@ addToCart(
       if (req.user.role.toLowerCase() === "admin") {
         throw new UnauthorizedException();
       }
-    return this.cartService.remove(+id);
+    return this.cartService.remove(id);
   }
 }
