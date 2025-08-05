@@ -11,12 +11,12 @@ export class Tax {
 type:Number,
 default:0
 })
-taxPrice:Number
+taxPrice:number
 @Prop({
     type:Number,
     default:0
 })
-shippingPrice:Number
+shippingPrice:number
 }
 
 
